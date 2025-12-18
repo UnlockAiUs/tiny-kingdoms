@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Simple Drag Test v2</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #1a1a2e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: sans-serif;
+    }
+    #game {
+      touch-action: none;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    #log {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      background: rgba(0,0,0,0.8);
+      color: #0f0;
+      padding: 10px;
+      font-size: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="log"></div>
+  <div id="game"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
+  <script>
+    const log = (msg) => {
+      const el = document.getElementById('log');
+      el.innerHTML = msg + '<br>' + el.innerHTML;
+      if (el.children.length > 20) el.lastChild.remove();
+    };
+
+    class TestScene extends Phaser.Scene {
+      constructor() {
+        super({ key: 'TestScene' });
+        this.dragState = null; // Track active drag at scene level
+      }
+
+      create() {
+        log('Scene created - v2 scene-level drag');
+
+        // Background
+        this.add.rectangle(360, 640, 720, 1280, 0x2d5a27);
+
+        // Play area label
+        this.add.text(360, 400, 'DRAG TOWERS HERE', {
+          fontSize: '32px',
+          color: '#ffffff'
+        }).setOrigin(0.5);
+
+        // Bottom panel
+        this.add.rectangle(360, 1150, 720, 260, 0x8B5A2B);
+        this.add.text(360, 1050, 'TOWER PANEL', {
+          fontSize: '24px',
+          color: '#ffffff'
+        }).setOrigin(0.5);
+
+        // Create 3 simple tower buttons
+        this.createTowerButton(150, 1150, 0xff4444, 'Fire');
+        this.createTowerButton(360, 1150, 0x4444ff, 'Ice');
+        this.createTowerButton(570, 1150, 0x44ff44, 'Earth');
+
+        // Placed towers counter
+        this.placedCount = 0;
+        this.countText = this.add.text(360, 100, 'Placed: 0', {
+          fontSize: '32px',
+          color: '#ffffff'
+        }).setOrigin(0.5);
+
+        // SCENE-LEVEL pointer handlers for drag tracking
+        this.input.on('pointermove', (pointer) => {
+          if (this.dragState && this.dragState.isDragging && this.dragState.ghost) {
+            this.dragState.ghost.x = pointer.x;
+            this.dragState.ghost.y = pointer.y;
+            log(`Dragging to ${Math.round(pointer.x)},${Math.round(pointer.y)}`);
+          }
+        });
+
+        this.input.on('pointerup', (pointer) => {
+          if (this.dragState && this.dragState.isDragging) {
+            log(`Scene pointerup at ${Math.round(pointer.x)},${Math.round(pointer.y)}`);
+            this.finishDrag(pointer);
+          }
+        });
+      }
+
+      createTowerButton(x, y, color, name) {
+        // Simple colored rectangle as a "tower card"
+        const button = this.add.container(x, y);
+
+        // Background
+        const bg = this.add.rectangle(0, 0, 100, 120, color);
+        button.add(bg);
+
+        // Label
+        const label = this.add.text(0, 0, name, {
+          fontSize: '20px',
+          color: '#ffffff'
+        }).setOrigin(0.5);
+        button.add(label);
+
+        // Make interactive
+        button.setSize(100, 120);
+        button.setInteractive({
+          useHandCursor: true,
+          hitArea: new Phaser.Geom.Rectangle(-50, -60, 100, 120),
+          hitAreaCallback: Phaser.Geom.Rectangle.Contains
+        });
+
+        // Store button info
+        button.setData('color', color);
+        button.setData('name', name);
+
+        // Only handle pointerdown on button - rest handled at scene level
+        button.on('pointerdown', (pointer) => {
+          log(`pointerdown on ${name}`);
+
+          // Store drag state at scene level
+          this.dragState = {
+            button: button,
+            name: name,
+            color: color,
+            startX: pointer.x,
+            startY: pointer.y,
+            isDragging: false,
+            ghost: null
+          };
+        });
+
+        // Use pointermove on button only to detect drag START
+        button.on('pointermove', (pointer) => {
+          if (!pointer.isDown || !this.dragState || this.dragState.isDragging) return;
+
+          const deltaY = this.dragState.startY - pointer.y;
+
+          // Start drag if moved up enough
+          if (deltaY > 15) {
+            log(`Started drag for ${name}`);
+            this.dragState.isDragging = true;
+
+            // Create ghost
+            this.dragState.ghost = this.add.container(pointer.x, pointer.y);
+            this.dragState.ghost.setDepth(100);
+
+            const ghostBg = this.add.rectangle(0, 0, 80, 80, color, 0.8);
+            this.dragState.ghost.add(ghostBg);
+
+            const ghostLabel = this.add.text(0, 0, name, {
+              fontSize: '16px',
+              color: '#ffffff'
+            }).setOrigin(0.5);
+            this.dragState.ghost.add(ghostLabel);
+
+            // Dim the button
+            button.setAlpha(0.5);
+          }
+        });
+
+        log(`Created ${name} button`);
+      }
+
+      finishDrag(pointer) {
+        if (!this.dragState) return;
+
+        const { button, name, color, ghost, isDragging } = this.dragState;
+
+        if (isDragging && ghost) {
+          // Check if dropped in play area (above panel)
+          if (pointer.y < 1020) {
+            log(`PLACED ${name} at ${Math.round(pointer.x)},${Math.round(pointer.y)}`);
+            this.placeTower(pointer.x, pointer.y, color, name);
+          } else {
+            log(`Cancelled - in panel area`);
+          }
+
+          ghost.destroy();
+        }
+
+        // Reset button
+        if (button) {
+          button.setAlpha(1);
+        }
+
+        // Clear drag state
+        this.dragState = null;
+      }
+
+      placeTower(x, y, color, name) {
+        const tower = this.add.container(x, y);
+
+        // Tower body
+        const body = this.add.rectangle(0, 0, 60, 60, color);
+        tower.add(body);
+
+        // Tower label
+        const label = this.add.text(0, 0, name[0], {
+          fontSize: '24px',
+          color: '#ffffff'
+        }).setOrigin(0.5);
+        tower.add(label);
+
+        // Update count
+        this.placedCount++;
+        this.countText.setText(`Placed: ${this.placedCount}`);
+
+        // Flash effect
+        this.cameras.main.flash(100, 255, 255, 255);
+      }
+    }
+
+    const config = {
+      type: Phaser.AUTO,
+      parent: 'game',
+      width: 720,
+      height: 1280,
+      backgroundColor: '#1a1a2e',
+      scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+      },
+      scene: TestScene,
+      input: {
+        activePointers: 3,
+        touch: {
+          capture: true
+        }
+      }
+    };
+
+    log('Starting Phaser v2...');
+    new Phaser.Game(config);
+  </script>
+</body>
+</html>

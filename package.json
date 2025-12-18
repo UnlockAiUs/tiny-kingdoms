@@ -1,0 +1,19 @@
+{
+  "name": "tiny-kingdoms",
+  "version": "0.1.0",
+  "description": "A Warcraft II-inspired 2D RTS game",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "phaser": "^3.80.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "vite": "^5.4.2",
+    "vite-plugin-pwa": "^1.2.0"
+  }
+}

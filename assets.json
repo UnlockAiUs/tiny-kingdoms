@@ -1,0 +1,247 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "pack": "Tiny Swords",
+    "author": "Pixel Frog",
+    "tileSize": 64,
+    "animationFps": 10,
+    "generatedAt": "2024-12-16"
+  },
+  "colors": ["black", "blue", "purple", "red", "yellow"],
+  "categories": {
+    "units": {
+      "description": "Playable character units with animations",
+      "classes": {
+        "archer": {
+          "role": "ranged_dps",
+          "animations": ["idle", "run", "shoot"],
+          "projectile": "arrow",
+          "paths": {
+            "black": "Assets/Tiny Swords/Units/Black Units/Archer",
+            "blue": "Assets/Tiny Swords/Units/Blue Units/Archer",
+            "purple": "Assets/Tiny Swords/Units/Purple Units/Archer",
+            "red": "Assets/Tiny Swords/Units/Red Units/Archer",
+            "yellow": "Assets/Tiny Swords/Units/Yellow Units/Archer"
+          }
+        },
+        "warrior": {
+          "role": "melee_tank",
+          "animations": ["idle", "run", "attack1", "attack2", "guard"],
+          "paths": {
+            "black": "Assets/Tiny Swords/Units/Black Units/Warrior",
+            "blue": "Assets/Tiny Swords/Units/Blue Units/Warrior",
+            "purple": "Assets/Tiny Swords/Units/Purple Units/Warrior",
+            "red": "Assets/Tiny Swords/Units/Red Units/Warrior",
+            "yellow": "Assets/Tiny Swords/Units/Yellow Units/Warrior"
+          }
+        },
+        "lancer": {
+          "role": "melee_versatile",
+          "animations": ["idle", "run", "up_attack", "up_defence", "down_attack", "down_defence", "right_attack", "right_defence", "upright_attack", "upright_defence", "downright_attack", "downright_defence"],
+          "paths": {
+            "black": "Assets/Tiny Swords/Units/Black Units/Lancer",
+            "blue": "Assets/Tiny Swords/Units/Blue Units/Lancer",
+            "purple": "Assets/Tiny Swords/Units/Purple Units/Lancer",
+            "red": "Assets/Tiny Swords/Units/Red Units/Lancer",
+            "yellow": "Assets/Tiny Swords/Units/Yellow Units/Lancer"
+          }
+        },
+        "monk": {
+          "role": "support_healer",
+          "animations": ["idle", "run", "heal"],
+          "effects": ["heal_effect"],
+          "paths": {
+            "black": "Assets/Tiny Swords/Units/Black Units/Monk",
+            "blue": "Assets/Tiny Swords/Units/Blue Units/Monk",
+            "purple": "Assets/Tiny Swords/Units/Purple Units/Monk",
+            "red": "Assets/Tiny Swords/Units/Red Units/Monk",
+            "yellow": "Assets/Tiny Swords/Units/Yellow Units/Monk"
+          }
+        }
+      }
+    },
+    "enemies": {
+      "description": "AI-controlled enemy units",
+      "basePath": "Assets/Tiny Swords/Enemies/Enemy Pack",
+      "types": {
+        "bear": { "tier": "medium", "type": "melee", "animations": ["idle", "run", "attack"] },
+        "gnoll": { "tier": "medium", "type": "ranged", "animations": ["idle", "walk", "throw", "hit", "bone"] },
+        "gnome": { "tier": "low", "type": "melee", "animations": ["idle", "run", "attack"] },
+        "harpoon_fish": { "tier": "medium", "type": "ranged", "animations": ["idle", "run", "throw", "harpoon"] },
+        "lancer": { "tier": "medium", "type": "melee", "animations": ["idle", "run", "attack"] },
+        "lizard": { "tier": "medium", "type": "melee", "animations": ["idle", "run", "attack", "hit"] },
+        "minotaur": { "tier": "boss", "type": "melee", "animations": ["idle", "walk", "attack", "guard"] },
+        "paddle_fish": { "tier": "low", "type": "melee", "animations": ["idle", "run", "attack"] },
+        "panda": { "tier": "medium", "type": "melee", "animations": ["idle", "run", "attack", "guard"] },
+        "shaman": { "tier": "high", "type": "magic", "animations": ["idle", "run", "attack", "explosion", "projectile"] },
+        "skull": { "tier": "medium", "type": "melee", "animations": ["idle", "run", "attack", "guard"] },
+        "snake": { "tier": "low", "type": "melee", "animations": ["idle", "run", "attack"] },
+        "spider": { "tier": "low", "type": "melee", "animations": ["idle", "run", "attack"] },
+        "thief": { "tier": "medium", "type": "melee", "animations": ["idle", "run", "attack"] },
+        "troll": { "tier": "boss", "type": "melee", "animations": ["idle", "walk", "attack", "windup", "clubpart1", "clubpart2", "recovery", "dead"] },
+        "turtle": { "tier": "medium", "type": "defensive", "animations": ["idle", "walk", "attack", "guard_in", "guard_out"] },
+        "boat": { "tier": "special", "type": "vehicle", "animations": ["idle"] }
+      }
+    },
+    "buildings": {
+      "description": "Constructable structures",
+      "basePath": "Assets/Tiny Swords/Buildings",
+      "types": {
+        "castle": { "category": "headquarters", "size": "large" },
+        "tower": { "category": "defense", "size": "medium" },
+        "barracks": { "category": "production", "produces": "warrior", "size": "medium" },
+        "archery": { "category": "production", "produces": "archer", "size": "medium" },
+        "monastery": { "category": "production", "produces": "monk", "size": "medium" },
+        "house1": { "category": "housing", "size": "small" },
+        "house2": { "category": "housing", "size": "small" },
+        "house3": { "category": "housing", "size": "medium" }
+      },
+      "colorFolders": {
+        "black": "Black Buildings",
+        "blue": "Blue Buildings",
+        "purple": "Purple Buildings",
+        "red": "Red Buildings",
+        "yellow": "Yellow Buildings"
+      }
+    },
+    "factions": {
+      "goblins": {
+        "basePath": "Assets/Tiny Swords/Factions/Goblins",
+        "buildings": ["wood_house", "wood_tower"],
+        "troops": {
+          "barrel": { "type": "explosive", "colors": ["blue", "purple", "red", "yellow"] },
+          "tnt": { "type": "explosive", "colors": ["blue", "purple", "red", "yellow"], "extras": ["dynamite"] },
+          "torch": { "type": "fire", "colors": ["blue", "purple", "red", "yellow"] }
+        }
+      },
+      "knights": {
+        "basePath": "Assets/Tiny Swords/Factions/Knights",
+        "buildings": {
+          "castle": { "states": ["blue", "purple", "red", "yellow", "construction", "destroyed"] },
+          "house": { "states": ["blue", "purple", "red", "yellow", "construction", "destroyed"] },
+          "tower": { "states": ["blue", "purple", "red", "yellow", "construction", "destroyed"] }
+        },
+        "troops": {
+          "archer": { "path": "Troops/Archer", "hasModular": true },
+          "pawn": { "colors": ["blue", "purple", "red", "yellow"] },
+          "warrior": { "colors": ["blue", "purple", "red", "yellow"] }
+        }
+      }
+    },
+    "terrain": {
+      "ground": {
+        "basePath": "Assets/Tiny Swords/Terrain/Ground",
+        "files": {
+          "tilemap_flat": "Tilemap_Flat.png",
+          "tilemap_elevation": "Tilemap_Elevation.png",
+          "shadows": "Shadows.png"
+        }
+      },
+      "tileset": {
+        "basePath": "Assets/Tiny Swords/Terrain/Tileset",
+        "colorVariants": 5,
+        "files": ["Tilemap_color1.png", "Tilemap_color2.png", "Tilemap_color3.png", "Tilemap_color4.png", "Tilemap_color5.png"],
+        "water": ["Water Background color.png", "Water Foam.png"]
+      },
+      "water": {
+        "basePath": "Assets/Tiny Swords/Terrain/Water",
+        "foam": "Foam/Foam.png",
+        "rocks": ["Rocks/Rocks_01.png", "Rocks/Rocks_02.png", "Rocks/Rocks_03.png", "Rocks/Rocks_04.png"]
+      },
+      "bridge": {
+        "file": "Assets/Tiny Swords/Terrain/Bridge/Bridge_All.png"
+      },
+      "decorations": {
+        "basePath": "Assets/Tiny Swords/Terrain/Decorations",
+        "categories": {
+          "bushes": { "count": 4 },
+          "clouds": { "count": 8 },
+          "rocks_in_water": { "count": 4 },
+          "rubber_duck": { "animated": true },
+          "misc": ["bones", "mushrooms", "pumpkins", "rocks", "scarecrow", "signs"]
+        }
+      }
+    },
+    "resources": {
+      "basePath": "Assets/Tiny Swords/Resources",
+      "types": {
+        "gold": {
+          "symbol": "G",
+          "animations": ["idle", "spawn"],
+          "variants": ["normal", "no_shadow"]
+        },
+        "metal": {
+          "symbol": "M",
+          "animations": ["idle", "spawn"],
+          "variants": ["normal", "no_shadow"]
+        },
+        "wood": {
+          "symbol": "W",
+          "animations": ["idle", "spawn"],
+          "variants": ["normal", "no_shadow"]
+        }
+      },
+      "structures": {
+        "gold_mine": {
+          "states": ["active", "inactive", "destroyed"],
+          "path": "Gold Mine"
+        },
+        "tree": {
+          "path": "Trees/Tree.png"
+        }
+      },
+      "animals": {
+        "sheep": {
+          "animations": ["idle", "bouncing", "all"],
+          "path": "Sheep"
+        }
+      }
+    },
+    "effects": {
+      "basePath": "Assets/Tiny Swords/Effects",
+      "types": {
+        "explosion": { "file": "Explosion/Explosions.png", "animated": true },
+        "fire": { "file": "Fire/Fire.png", "animated": true }
+      }
+    },
+    "ui": {
+      "basePath": "Assets/Tiny Swords/UI",
+      "components": {
+        "banners": {
+          "path": "Banners",
+          "types": ["connection_down", "connection_left", "connection_right", "connection_up", "horizontal", "vertical"],
+          "carved": ["regular", "3slides", "9slides"]
+        },
+        "buttons": {
+          "path": "Buttons",
+          "colors": ["blue", "red"],
+          "states": ["normal", "pressed", "disabled", "hover"],
+          "layouts": ["regular", "3slides", "9slides"]
+        },
+        "icons": {
+          "path": "Icons",
+          "count": 10,
+          "states": ["regular", "pressed", "disable"]
+        },
+        "pointers": {
+          "path": "Pointers",
+          "count": 6
+        },
+        "ribbons": {
+          "path": "Ribbons",
+          "colors": ["blue", "red", "yellow"],
+          "hasConnections": true,
+          "hasPressedStates": true
+        }
+      }
+    }
+  },
+  "knownIssues": [
+    {
+      "type": "typo",
+      "location": "Assets/Tiny Swords/Factions/Knights/Troops/Archer/Purple",
+      "file": "Archer_Purlple.aseprite",
+      "should_be": "Archer_Purple.aseprite"
+    }
+  ]
+}
