@@ -238,7 +238,6 @@ export class WaveSystemV2 {
     const ratioTotal = theme.focusRatio + theme.supportRatio + theme.wildcardRatio;
     const focusRatio = ratioTotal > 0 ? theme.focusRatio / ratioTotal : 1;
     const supportRatio = ratioTotal > 0 ? theme.supportRatio / ratioTotal : 0;
-    const wildcardRatio = ratioTotal > 0 ? theme.wildcardRatio / ratioTotal : 0;
 
     let focusCount = Math.floor(total * focusRatio);
     let supportCount = Math.floor(total * supportRatio);
