@@ -11,20 +11,26 @@ export const DIFFICULTY_CONFIG = {
     description: 'Full rewards, relaxed gameplay',
     rewardMultiplier: 1.0,
     healthMultiplier: 1.0,
+    countMultiplier: 0.95,
+    speedMultiplier: 0.95,
     color: 0x4CAF50 // Green
   },
   [Difficulty.NORMAL]: {
     name: 'Normal',
     description: '75% rewards, balanced challenge',
     rewardMultiplier: 0.75,
-    healthMultiplier: 1.15,
+    healthMultiplier: 1.25,
+    countMultiplier: 1.05,
+    speedMultiplier: 1.05,
     color: 0xFF9800 // Orange
   },
   [Difficulty.HARD]: {
     name: 'Hard',
     description: '50% rewards, tough enemies',
     rewardMultiplier: 0.5,
-    healthMultiplier: 1.35,
+    healthMultiplier: 1.5,
+    countMultiplier: 1.15,
+    speedMultiplier: 1.08,
     color: 0xF44336 // Red
   }
 };

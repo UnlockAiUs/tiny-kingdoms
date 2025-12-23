@@ -122,7 +122,9 @@ export class BattleScene extends Phaser.Scene {
     this.waveSystem = new WaveSystemV2(this, {
       pathSystem: this.pathSystem,
       rewardMultiplier: diffConfig.rewardMultiplier,
-      healthMultiplier: diffConfig.healthMultiplier
+      healthMultiplier: diffConfig.healthMultiplier,
+      countMultiplier: diffConfig.countMultiplier,
+      speedMultiplier: diffConfig.speedMultiplier
     });
 
     // Create placement zone visualization (hidden until dragging)
@@ -842,7 +844,9 @@ export class BattleScene extends Phaser.Scene {
     this.waveSystem = new WaveSystemV2(this, {
       pathSystem: this.pathSystem,
       rewardMultiplier: diffConfig.rewardMultiplier,
-      healthMultiplier: diffConfig.healthMultiplier
+      healthMultiplier: diffConfig.healthMultiplier,
+      countMultiplier: diffConfig.countMultiplier,
+      speedMultiplier: diffConfig.speedMultiplier
     });
 
     // Update difficulty indicator in HUD
